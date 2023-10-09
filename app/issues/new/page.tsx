@@ -1,12 +1,7 @@
 "use client";
 
 import "easymde/dist/easymde.min.css";
-import {
-  TextField,
-  TextFieldRoot,
-  Button,
-  Callout,
-} from "@radix-ui/themes";
+import { TextField, TextFieldRoot, Button, Callout } from "@radix-ui/themes";
 import SimpleMDE from "react-simplemde-editor";
 
 import { useForm, Controller } from "react-hook-form";
@@ -34,6 +29,15 @@ const NewIssuePage = () => {
   });
   const router = useRouter();
 
+  const handleOnSubmit = handleSubmit(async (data) => {
+    try {
+      await axios.post("/api/issues", data);
+      router.push("/issues");
+    } catch (error) {
+      setSubmitError("Unable to submit the issue. All fields must be filled!");
+    }
+  });
+
   return (
     <div className="max-w-lg">
       {submitError ? (
@@ -41,19 +45,7 @@ const NewIssuePage = () => {
           <Callout.Text>{submitError}</Callout.Text>
         </Callout.Root>
       ) : null}
-      <form
-        className="space-y-3"
-        onSubmit={handleSubmit(async (data) => {
-          try {
-            await axios.post("/api/issues", data);
-            router.push("/issues");
-          } catch (error) {
-            setSubmitError(
-              "Unable to submit the issue. All fields must be filled!"
-            );
-          }
-        })}
-      >
+      <form className="space-y-3" onSubmit={handleOnSubmit}>
         <TextFieldRoot>
           <TextField.Input
             placeholder="Title"
