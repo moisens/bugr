@@ -6,7 +6,6 @@ import {
   TextFieldRoot,
   Button,
   Callout,
-  Text,
 } from "@radix-ui/themes";
 import SimpleMDE from "react-simplemde-editor";
 
@@ -18,7 +17,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import { createIssuesSchema } from "../../validationSchema";
-import ErrorsMessages from "../../components/ErrorsMessages";
+import ErrorsMessages from "@/app/components/ErrorsMessages";
+import Spinner from "@/app/components/Spinner";
 
 type IssueFormType = z.infer<typeof createIssuesSchema>;
 
@@ -70,7 +70,9 @@ const NewIssuePage = () => {
           )}
         />
         <ErrorsMessages>{errors.description?.message}</ErrorsMessages>
-        <Button>{isSubmitting ? "Submitting..." : "Submit New Issue"}</Button>
+        <Button disabled={isSubmitting}>
+          {isSubmitting ? <Spinner /> : "Submit New Issue"}
+        </Button>
       </form>
     </div>
   );
