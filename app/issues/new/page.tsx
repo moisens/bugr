@@ -1,21 +1,36 @@
 "use client";
 
 import "easymde/dist/easymde.min.css";
-import { TextField, TextFieldRoot, Button, Callout } from "@radix-ui/themes";
+import {
+  TextField,
+  TextFieldRoot,
+  Button,
+  Callout,
+  Text,
+} from "@radix-ui/themes";
 import SimpleMDE from "react-simplemde-editor";
+
 import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
-export type IssueFormType = {
-  title: string;
-  description: string;
-};
+import { createIssuesSchema } from "../../validationSchema";
+
+type IssueFormType = z.infer<typeof createIssuesSchema>;
 
 const NewIssuePage = () => {
   const [submitError, setSubmitError] = useState("");
-  const { register, control, handleSubmit } = useForm<IssueFormType>();
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<IssueFormType>({
+    resolver: zodResolver(createIssuesSchema),
+  });
   const router = useRouter();
 
   return (
@@ -32,7 +47,9 @@ const NewIssuePage = () => {
             await axios.post("/api/issues", data);
             router.push("/issues");
           } catch (error) {
-            setSubmitError("Unable to submit the issue. All fields must be filled!");
+            setSubmitError(
+              "Unable to submit the issue. All fields must be filled!"
+            );
           }
         })}
       >
@@ -43,6 +60,11 @@ const NewIssuePage = () => {
             {...register("title")}
           />
         </TextFieldRoot>
+        {errors.title ? (
+          <Text color="tomato" as="p">
+            {errors.title.message}
+          </Text>
+        ) : null}
         <Controller
           name="description"
           control={control}
@@ -50,7 +72,12 @@ const NewIssuePage = () => {
             <SimpleMDE placeholder="Description" {...field} />
           )}
         />
-        <Button>Submit New Issue</Button>
+        {errors.description ? (
+          <Text color="tomato" as="p">
+            {errors.description.message}
+          </Text>
+        ) : null}
+        <Button>{isSubmitting ? "Submitting..." : "Submit New Issue"}</Button>
       </form>
     </div>
   );
