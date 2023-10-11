@@ -2,7 +2,6 @@
 
 import { Button, Callout, TextField, TextFieldRoot } from "@radix-ui/themes";
 import "easymde/dist/easymde.min.css";
-import dynamic from "next/dynamic";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
@@ -16,9 +15,7 @@ import Spinner from "@/app/components/Spinner";
 import { Issue } from "@prisma/client";
 import { createIssuesSchema } from "../../validationSchema";
 
-const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
-  ssr: false,
-});
+import SimpleMDE from "react-simplemde-editor";
 
 type IssueFormDataType = z.infer<typeof createIssuesSchema>;
 
