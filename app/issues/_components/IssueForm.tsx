@@ -39,6 +39,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
       if (issue) await axios.patch(`/api/issues/${issue.id}`, data);
       else await axios.post("/api/issues", data);
       router.push("/issues");
+      router.refresh();
     } catch (error) {
       setSubmitError("Unable to submit the issue. All fields must be filled!");
     }
@@ -71,7 +72,8 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
         />
         <ErrorsMessages>{errors.description?.message}</ErrorsMessages>
         <Button disabled={isSubmitting}>
-          {issue ? "Update Issue" : "Submit New Issue"}{" "}{/*//TODO: Check if the condition works accurately!*/}
+          {issue ? "Update Issue" : "Submit New Issue"}{" "}
+          {/*//TODO: Check if the condition works accurately!*/}
           {isSubmitting && <Spinner />}
         </Button>
       </form>
