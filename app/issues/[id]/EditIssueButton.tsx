@@ -4,16 +4,14 @@ import Link from "next/link";
 
 const EditIssueButton = ({ issueId }: { issueId: number }) => {
   return (
-    <Box>
-      <Button
-        size="3"
-        variant="soft"
-        className="hover:bg-green-600 hover:text-white transition-colors"
-      >
-        <Pencil2Icon />
-        <Link href={`/issues/${issueId}/edit`}>Edit Issue</Link>
-      </Button>
-    </Box>
+    <Button
+      size="2"
+      variant="soft"
+      className="hover:bg-green-600 hover:text-white transition-colors"
+    >
+      <Pencil2Icon />
+      <Link href={`/issues/${issueId}/edit`}>Edit Issue</Link>
+    </Button>
   );
 };
 
