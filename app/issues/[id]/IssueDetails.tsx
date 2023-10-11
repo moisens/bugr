@@ -7,13 +7,13 @@ const IssueDetails = ({ issue }: { issue: Issue }) => {
   const { title, description, createdAt, status } = issue;
   return (
     <>
-      <Box>
+      <Box className="md:col-span-4">
         <Heading>{title}</Heading>
         <Flex className="space-x-3" my="2">
           <IssuesStatusBadge status={status} />
           <Text>{createdAt.toDateString()}</Text>
         </Flex>
-        <Card className="prose" mt="4">
+        <Card className="prose max-w-full" mt="4">
           <ReactMarkdown>{description}</ReactMarkdown>
         </Card>
       </Box>
