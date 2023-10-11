@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
+import { createIssuesSchema } from "@/app/validationSchema";
 import prisma from "@/prisma/client";
-import { createIssuesSchema } from "../../validationSchema";
+import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {
   const body = await request.json();
