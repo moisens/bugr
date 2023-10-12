@@ -10,7 +10,7 @@ const EditIssueButton = ({ issueId }: { issueId: number }) => {
       className="hover:bg-green-600 hover:text-white transition-colors"
     >
       <Pencil2Icon />
-      <Link href={`/issues/${issueId}/edit`}>Edit Issue</Link>
+      <Link href={`/issues/edit/${issueId}`}>Edit Issue</Link>
     </Button>
   );
 };

@@ -14,6 +14,6 @@ export const links: LinksType[] = [
   {
     id: "e3b75f66-651c",
     label: "Issues",
-    hrefLink: "/issues"
+    hrefLink: "/issues/list"
   },
 ]
