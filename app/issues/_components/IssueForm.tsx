@@ -21,11 +21,12 @@ type IssueFormDataType = z.infer<typeof createIssuesSchema>;
 
 const IssueForm = ({ issue }: { issue?: Issue }) => {
   const [submitError, setSubmitError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const {
     register,
     control,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<IssueFormDataType>({
     resolver: zodResolver(createIssuesSchema),
   });
@@ -33,11 +34,13 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
 
   const handleOnSubmit = handleSubmit(async (data) => {
     try {
+      setIsSubmitting(true);
       if (issue) await axios.patch(`/api/issues/${issue.id}`, data);
       else await axios.post("/api/issues", data);
       router.push("/issues");
       router.refresh();
     } catch (error) {
+      setIsSubmitting(false);
       setSubmitError("Unable to submit the issue. All fields must be filled!");
     }
   });
