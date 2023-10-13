@@ -8,7 +8,9 @@ import {
   DropdownMenu,
   Avatar,
   Text,
+  Button,
 } from "@radix-ui/themes";
+import { FcGoogle } from "react-icons/fc";
 import classnames from "classnames";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -61,14 +63,32 @@ const Navbar = () => {
                   <DropdownMenu.Label>
                     <Text size="2">{session.user?.email}</Text>
                   </DropdownMenu.Label>
-                  <DropdownMenu.Item>
+                  <DropdownMenu.Item color="green">
                     <Link href="/api/auth/signout">Logout</Link>
                   </DropdownMenu.Item>
                 </DropdownMenu.Content>
               </DropdownMenu.Root>
             )}
             {status === "unauthenticated" && (
-              <Link href="/api/auth/signin">Login</Link>
+              <DropdownMenu.Root>
+                <DropdownMenu.Trigger>
+                  <Button>Login</Button>
+                </DropdownMenu.Trigger>
+                <DropdownMenu.Content>
+                  <Box>
+                    <Box>{/*TODO: Add login with email here*/}</Box>
+                    <Box>
+                      <DropdownMenu.Item color="green">
+                        <FcGoogle className="mr-2" />
+                        {""}
+                        <Link href="/api/auth/signin">
+                          Continue with Google
+                        </Link>
+                      </DropdownMenu.Item>
+                    </Box>
+                  </Box>
+                </DropdownMenu.Content>
+              </DropdownMenu.Root>
             )}
           </Box>
         </Flex>
