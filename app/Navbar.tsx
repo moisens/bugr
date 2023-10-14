@@ -1,21 +1,21 @@
 "use client";
 
+import { Skeleton } from "@/app/components";
 import { links } from "@/utils/utils";
 import {
+  Avatar,
   Box,
-  Flex,
   Container,
   DropdownMenu,
-  Avatar,
-  Text,
-  Button,
+  Flex,
+  Text
 } from "@radix-ui/themes";
-import { FcGoogle } from "react-icons/fc";
 import classnames from "classnames";
+import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Session } from "next-auth";
+import { FcGoogle } from "react-icons/fc";
 
 const Navbar = () => {
   const { status, data: session } = useSession();
@@ -69,7 +69,7 @@ export type AuthComponentType = {
 };
 
 export const AuthComponent = ({ status, session }: AuthComponentType) => {
-  if (status === "loading") return null;
+  if (status === "loading") return <Skeleton width="3rem" />;
 
   return (
     <Box>
