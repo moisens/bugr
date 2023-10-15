@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import DeleteIssueButton from "./DeleteIssueButton";
 import EditIssueButton from "./EditIssueButton";
 import IssueDetails from "./IssueDetails";
+import AssigneeSelect from "./AssigneeSelect";
 
 export type ParamsType = {
   params: {
@@ -32,6 +33,7 @@ const IssueDetailPage = async ({ params: { id } }: ParamsType) => {
       {session ? (
         <Box>
           <Flex direction="column" gap="4">
+            <AssigneeSelect />
             <EditIssueButton issueId={issueId} />
             <DeleteIssueButton issueId={issueId} />
           </Flex>
