@@ -1,28 +1,19 @@
 "use client";
 
-import { Issue, User } from "@prisma/client";
+import { Skeleton } from "@/app/components";
+import { Issue } from "@prisma/client";
 import { Select } from "@radix-ui/themes";
 import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
-import { Skeleton } from "@/app/components";
 import toast, { Toaster } from "react-hot-toast";
+import useFetchUsers from "../../hooks/usFetchUsers";
 
 const AssigneeSelect = ({ issue }: { issue: Issue }) => {
-  const {
-    data: users,
-    isLoading,
-    error,
-  } = useQuery<User[]>({
-    queryKey: ["users"],
-    queryFn: () => axios.get("/api/users").then((res) => res.data),
-    staleTime: 300000,
-    retry: 3,
-  });
+  const { data: users, isLoading, error } = useFetchUsers();
 
   if (isLoading) return <Skeleton />;
   if (error) return null;
 
-  const handleAssignUser = async (userId: string) => {
+  const handleAssignIssueToUser = async (userId: string) => {
     try {
       await axios.patch(`/api/issues/${issue.id}`, {
         assignedToUserId: userId === "unassigned" ? null : userId,
@@ -36,7 +27,7 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
     <>
       <Select.Root
         defaultValue={issue.assignedToUserId || ""}
-        onValueChange={handleAssignUser}
+        onValueChange={handleAssignIssueToUser}
       >
         <Select.Trigger placeholder="Assing issue to..." />
         <Select.Content>
