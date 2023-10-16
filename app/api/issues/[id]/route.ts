@@ -1,4 +1,4 @@
-import { createIssuesSchema } from "@/app/validationSchema";
+import { patchIssuesSchema } from "@/app/validationSchema";
 import prisma from "@/prisma/client";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
@@ -12,10 +12,23 @@ export const PATCH = async (
   if (!session) return NextResponse.json({}, { status: 401 });
 
   const body = await request.json();
-  const validation = createIssuesSchema.safeParse(body);
+  const validation = patchIssuesSchema.safeParse(body);
 
   if (!validation.success)
     return NextResponse.json(validation.error.format(), { status: 400 });
+
+  const { assignedToUserId, title, description } = body;
+
+  if (assignedToUserId) {
+    const user = await prisma.user.findUnique({
+      where: { id: assignedToUserId },
+    });
+    if (!user)
+      return NextResponse.json(
+        { error: "That user doesn't exist in the database!" },
+        { status: 400 }
+      );
+  }
 
   const issue = await prisma.issue.findUnique({
     where: { id: parseInt(params.id) },
@@ -23,15 +36,16 @@ export const PATCH = async (
 
   if (!issue)
     return NextResponse.json(
-      { error: "It appear that issue doesn't exist!" },
+      { error: "It appear that issue doesn't exist in the database!" },
       { status: 404 }
     );
 
   const updatedIssue = await prisma.issue.update({
     where: { id: issue.id },
     data: {
-      title: body.title,
-      description: body.description,
+      title,
+      description,
+      assignedToUserId,
     },
   });
 
@@ -55,7 +69,7 @@ export const DELETE = async (
     return NextResponse.json(
       {
         error:
-          "The issue you're trying to delete doesn't exists is our database!",
+          "The issue you're trying to delete doesn't exist is our database!",
       },
       { status: 404 }
     );
