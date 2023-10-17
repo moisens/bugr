@@ -1,8 +1,11 @@
 import { IssuesStatusBadge, Link } from "@/app/components";
+import NextLink from "next/link";
 import prisma from "@/prisma/client";
 import { Table } from "@radix-ui/themes";
 import IssueActions from "./IssueActions";
-import { Status } from "@prisma/client";
+import { Issue, Status } from "@prisma/client";
+import { columns } from "@/app/utils/utils";
+import { IoMdArrowDropup, IoMdArrowDropdown } from "react-icons/io";
 
 export const dynamic = "force-dynamic"; //Force dynamic rendering and uncached data fetching of a layout or page by disabling all caching of fetch requests and always revalidating.
 //export const revalidate = 0 OR 60 etc. //same thing as "force-dynamic"
@@ -10,6 +13,7 @@ export const dynamic = "force-dynamic"; //Force dynamic rendering and uncached d
 export type SearchParamsType = {
   searchParams: {
     status: Status;
+    orderBy: keyof Issue;
   };
 };
 
@@ -30,13 +34,25 @@ const IsssuesPage = async ({ searchParams }: SearchParamsType) => {
       <Table.Root variant="surface">
         <Table.Header>
           <Table.Row>
-            <Table.ColumnHeaderCell>Issues</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell className="hidden md:table-cell">
-              Status
-            </Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell className="hidden md:table-cell">
-              Created
-            </Table.ColumnHeaderCell>
+            {columns.map((column) => {
+              const { id, label, value } = column;
+              return (
+                <Table.ColumnHeaderCell key={id}>
+                  <NextLink
+                    href={{
+                      query: { ...searchParams, orderBy: value },
+                    }}
+                  >
+                    {label}
+                  </NextLink>
+                  {value === searchParams.orderBy ? (
+                    <IoMdArrowDropup className="inline text-green-600" />
+                  ) : (
+                    <IoMdArrowDropdown className="inline" />
+                  )}
+                </Table.ColumnHeaderCell>
+              );
+            })}
           </Table.Row>
         </Table.Header>
         <Table.Body>
