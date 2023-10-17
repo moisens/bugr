@@ -1,14 +1,14 @@
 "use client";
 
 import { Skeleton } from "@/app/components";
-import { links } from "@/utils/utils";
+import { links } from "@/app/utils/utils";
 import {
   Avatar,
   Box,
   Container,
   DropdownMenu,
   Flex,
-  Text
+  Text,
 } from "@radix-ui/themes";
 import classnames from "classnames";
 import { Session } from "next-auth";
