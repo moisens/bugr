@@ -42,9 +42,9 @@ const IsssuesPage = async ({ searchParams }: SearchParamsType) => {
         <Table.Header>
           <Table.Row>
             {columns.map((column) => {
-              const { id, label, value } = column;
+              const { id, label, value, className } = column;
               return (
-                <Table.ColumnHeaderCell key={id}>
+                <Table.ColumnHeaderCell key={id} className={className}>
                   <NextLink
                     href={{
                       query: { ...searchParams, orderBy: value },
