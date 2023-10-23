@@ -2,6 +2,7 @@ import Pagination from "@/app/components/Pagination";
 import prisma from "@/prisma/client";
 import { Status } from "@prisma/client";
 import { Flex } from "@radix-ui/themes";
+import { Metadata } from "next";
 import IssueActions from "./IssueActions";
 import IssueTable, { IssueQueryType, columnNames } from "./IssueTable";
 
@@ -51,4 +52,10 @@ const IsssuesPage = async ({ searchParams }: SearchParamsType) => {
     </Flex>
   );
 };
+
+export const metadata: Metadata = {
+  title: "bugr | Issues list",
+  description: "List of all the issues!",
+};
+
 export default IsssuesPage;
