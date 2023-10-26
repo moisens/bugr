@@ -5,6 +5,7 @@ import { links } from "@/app/utils/utils";
 import {
   Avatar,
   Box,
+  Button,
   Container,
   DropdownMenu,
   Flex,
@@ -114,6 +115,9 @@ export const AuthComponent = ({ status, session }: AuthComponentType) => {
           </DropdownMenu.Content>
         </DropdownMenu.Root>
       )}
+      <Button>
+        LOGIN
+      </Button>
     </Box>
   );
 };
